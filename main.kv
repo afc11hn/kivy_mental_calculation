@@ -13,8 +13,13 @@
         text: "Enter"
         on_press: trainer.check(entry.text)
 
-<Popup>:
+<TAPopup>:
     title:"Wrong"
     Button:
         text: "Try again"
+        on_release: root.dismiss()
+<ValueErrorPopUp>
+    title:"Wrong"
+    Button:
+        text: "not a number"
         on_release: root.dismiss()
