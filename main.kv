@@ -1,0 +1,20 @@
+<Trainer>:
+    id: trainer
+    display: entry
+    orientation: 'vertical'
+    Label:
+        text: trainer.text
+    TextInput:
+        id: entry
+        on_text_validate: trainer.check(entry.text); self.focus=True
+        multiline: False
+        focus: True
+    Button:
+        text: "Enter"
+        on_press: trainer.check(entry.text)
+
+<Popup>:
+    title:"Wrong"
+    Button:
+        text: "Try again"
+        on_release: root.dismiss()
