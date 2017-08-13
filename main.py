@@ -13,6 +13,26 @@ class Trainer(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Trainer, self).__init__(**kwargs)  # init BoxLayout
+        self.numbers = []
+        self.operator = []
+        with open('exercise.txt') as f:
+            data = f.readlines()
+        for i in range(len(data)):
+            line = data[i].replace(" ", "")
+            cursor = 0
+            temp = []
+            temp2 = []
+            while cursor != -1:
+                cursor = line.find('[')
+                cursor2 = line.find(']')
+                if cursor2 != -1:
+                    temp.append(line[cursor + 1:cursor2].split(','))
+                    temp2.append(line[cursor2 + 1:line.find('[', cursor2)])
+                line = line[cursor2 + 1:]
+
+            self.numbers.append(temp)
+            del temp2[-1]
+            self.operator.append(temp2)
         self.new_exercise()  # first exercise
 
     def check(self, textinput):
@@ -35,10 +55,15 @@ class Trainer(BoxLayout):
             self.display.text = ""
 
     def new_exercise(self):
-        n1 = randint(1, 100)
-        n2 = randint(1, 100)
-        self.text = str(n1) + "+" + str(n2)
-        # TODO new and better exercises. e.g. minus, multiply, divide, square, root or n1 + n2 - n3
+        rand = []
+        line_index = randint(0, len(self.numbers) - 1)
+        print(line_index)
+        for i in self.numbers[line_index]:
+            rand.append(randint(int(i[0]), int(i[1])))
+        self.text = str(rand[0])
+        for i in range(1, len(rand)):
+            self.text += self.operator[line_index][i - 1]
+            self.text += str(rand[i])
 
 
 class ValueErrorPopup(Popup):
