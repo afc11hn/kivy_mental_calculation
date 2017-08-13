@@ -33,7 +33,7 @@ class Trainer(BoxLayout):
             self.numbers.append(temp)
             del temp2[-1]
             self.operator.append(temp2)
-        self.new_exercise()  # first exercise
+        self.new_exercise()  #first exercise
 
     def check(self, textinput):
         try:
@@ -57,7 +57,6 @@ class Trainer(BoxLayout):
     def new_exercise(self):
         rand = []
         line_index = randint(0, len(self.numbers) - 1)
-        print(line_index)
         for i in self.numbers[line_index]:
             rand.append(randint(int(i[0]), int(i[1])))
         self.text = str(rand[0])
