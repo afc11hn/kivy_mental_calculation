@@ -1,4 +1,5 @@
 import os
+import re
 
 os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'  # opengl error fix for win10
 from kivy.app import App
@@ -10,30 +11,22 @@ from random import randint
 
 class Trainer(BoxLayout):
     text = StringProperty()
+    EXERCISE_PATTERN = re.compile(
+            r'\w*?\[\w*?(\d+)\w*?,\w*?(\d+)\w*?\]\w*?'
+            r'(.)'
+            r'\w*?\[\w*?(\d+)\w*?,\w*?(\d+)\w*?\]\w*?'
+    )
 
     def __init__(self, **kwargs):
         super(Trainer, self).__init__(**kwargs)  # init BoxLayout
         self.numbers = []
         self.operator = []
         with open('exercise.txt') as f:
-            data = f.readlines()
-        for i in range(len(data)):
-            line = data[i].replace(" ", "")
-            cursor = 0
-            temp = []
-            temp2 = []
-            while cursor != -1:
-                cursor = line.find('[')
-                cursor2 = line.find(']')
-                if cursor2 != -1:
-                    temp.append(line[cursor + 1:cursor2].split(','))
-                    temp2.append(line[cursor2 + 1:line.find('[', cursor2)])
-                line = line[cursor2 + 1:]
-
-            self.numbers.append(temp)
-            del temp2[-1]
-            self.operator.append(temp2)
-        self.new_exercise()  #first exercise
+            for line in f:
+                m = self.EXERCISE_PATTERN.match(line)
+                self.numbers.append([m.group(1, 2), m.group(4, 5)])
+                self.operator.append(m.group(3))
+        self.new_exercise()  # first exercise
 
     def check(self, textinput):
         try:
